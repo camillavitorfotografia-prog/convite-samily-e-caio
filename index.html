@@ -12,7 +12,7 @@
 <body>
   <header class="hero">
     <div class="hero__content">
-      <p class="hero__title">O Nosso Casamento</p>
+      <!-- O título foi removido daqui para deixar a logo em destaque -->
       <img class="hero__logo" src="samily e caio 1.png" alt="Samilly &amp; Caio">
     </div>
   </header>
@@ -28,7 +28,8 @@
     </section>
 
     <section class="invite">
-      <p class="invite__intro">É COM IMENSA ALEGRIA QUE CONVIDAMOS VOCÊ PARA COMEMORAR ESSE MOMENTO ÚNICO</p>
+      <!-- Frase integrada com o nome do evento -->
+      <p class="invite__intro">É COM IMENSA ALEGRIA QUE CONVIDAMOS VOCÊ PARA COMEMORAR ESSE MOMENTO ÚNICO: O NOSSO CASAMENTO</p>
       <p class="invite__date">20.09.26</p>
       <p class="invite__time">DOMINGO ÀS 15:30H</p>
     </section>
@@ -52,9 +53,10 @@
         <div class="location__actions">
           <a class="location__btn" href="https://www.google.com/maps/place/Trama+Club/@-16.6017913,-39.1203956,17z/data=!3m1!4b1!4m6!3m5!1s0x7369c8d26d95b45:0x1a80883a5be6e776!8m2!3d-16.6017913!4d-39.1203956!16s%2Fg%2F11cn9jqd2s?entry=ttu&g_ep=EgoyMDI2MDYyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" aria-label="Ver localização">Localização</a>
           
-          <!-- BOTÃO DIRETO PARA O WHATSAPP -->
           <a class="location__btn" href="#" onclick="enviarWhatsApp(); return false;" aria-label="Confirmar presença">Confirmação de presença</a>
         </div>
+        <!-- Mensagem de privacidade adicionada aqui -->
+        <p style="margin-top: 15px; font-size: 0.8rem; color: #666; font-style: italic;">Este é um convite exclusivo e pessoal. Por favor, não compartilhe este link.</p>
       </div>
     </section>
 
@@ -72,29 +74,14 @@
   </section>
 
   <script>
-    // ---------------------------------------------------------
-    // FUNÇÃO DO WHATSAPP ATUALIZADA
-    // ---------------------------------------------------------
     function enviarWhatsApp() {
-      // Pega o nome do link e arruma os espaços
       let nomeNoLink = window.location.search.substring(1).replace(/-/g, ' ').replace(/&/g, ' e ');
-      
-      // Se não tiver nome no link, coloca a instrução para o convidado digitar
       let nome = nomeNoLink ? decodeURIComponent(nomeNoLink) : "(Escreva seu nome e dos seus acompanhantes aqui)";
-      
-      // O seu número
       let telefone = "5573988467912"; 
-
-      // Monta a mensagem final
       let mensagem = "Olá Samilly e Caio! Aqui é " + nome + ". Estamos confirmando nossa presença no casamento! ✨";
-      
-      // Link oficial
       let linkWhatsApp = "https://api.whatsapp.com/send?phone=" + telefone + "&text=" + encodeURIComponent(mensagem);
-      
-      // Abre o WhatsApp
       window.open(linkWhatsApp, '_blank');
     }
-    // ---------------------------------------------------------
 
     document.addEventListener("DOMContentLoaded", () => {
       const audio = document.getElementById("bg-music");
@@ -104,15 +91,9 @@
 
       if (!audio || !canvas || !ctx || !pill) return;
 
-      let audioCtx;
-      let analyser;
-      let dataArray;
-      let animationId;
-      let setupDone = false;
+      let audioCtx, analyser, dataArray, animationId, setupDone = false;
 
-      const setPlayingState = (isPlaying) => {
-        pill.classList.toggle("is-playing", isPlaying);
-      };
+      const setPlayingState = (isPlaying) => pill.classList.toggle("is-playing", isPlaying);
 
       const setupAudioGraph = () => {
         if (setupDone) return;
@@ -131,21 +112,17 @@
         const { width, height } = canvas;
         ctx.clearRect(0, 0, width, height);
         analyser.getByteFrequencyData(dataArray);
-
         const barCount = 32;
         const step = Math.floor(dataArray.length / barCount);
         const barWidth = width / barCount;
-
         for (let i = 0; i < barCount; i++) {
           const value = dataArray[i * step] / 255;
           const barHeight = Math.max(8, value * height);
           const x = i * barWidth;
           const y = height - barHeight;
-
           const gradient = ctx.createLinearGradient(0, y, 0, height);
           gradient.addColorStop(0, "#cdbca9");
           gradient.addColorStop(1, "#9c7f63");
-
           ctx.fillStyle = gradient;
           if (ctx.roundRect) {
             ctx.beginPath();
@@ -158,17 +135,12 @@
         animationId = requestAnimationFrame(draw);
       };
 
-      const startVisualizer = () => {
-        if (animationId) cancelAnimationFrame(animationId);
-        draw();
-      };
-
       const playMusic = async () => {
         try {
           setupAudioGraph();
           await audioCtx.resume();
           await audio.play();
-          startVisualizer();
+          if (!animationId) draw();
           setPlayingState(true);
           return true;
         } catch (err) {
@@ -177,39 +149,9 @@
         }
       };
 
-      const pauseMusic = () => {
-        audio.pause();
-        if (animationId) cancelAnimationFrame(animationId);
-        setPlayingState(false);
-      };
-
-      const togglePlayback = async () => {
-        if (audio.paused) await playMusic();
-        else pauseMusic();
-      };
-
-      pill.addEventListener("click", togglePlayback);
-      pill.addEventListener("keydown", async (evt) => {
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          await togglePlayback();
-        }
-      });
-
+      pill.addEventListener("click", () => audio.paused ? playMusic() : (audio.pause(), setPlayingState(false)));
       playMusic();
-
-      const interactionHandler = async () => {
-        await playMusic();
-      };
-      ["click", "touchstart"].forEach((evt) => {
-        window.addEventListener(
-          evt,
-          () => {
-            interactionHandler();
-          },
-          { once: true, passive: true }
-        );
-      });
+      ["click", "touchstart"].forEach((evt) => window.addEventListener(evt, () => playMusic(), { once: true, passive: true }));
     });
   </script>
 </body>
