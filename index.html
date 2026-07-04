@@ -13,7 +13,7 @@
   <header class="hero">
     <div class="hero__content">
       <p class="hero__title">O Nosso Casamento</p>
-      <img class="hero__logo" src="samily e caio 1.png" alt="Samily &amp; Caio">
+      <img class="hero__logo" src="samily e caio 1.png" alt="Samilly &amp; Caio">
     </div>
   </header>
 
@@ -59,7 +59,7 @@
     </section>
 
     <section class="end-photo" aria-label="Foto final">
-      <img class="end-photo__img" src="S&C (152 de 206).jpg" alt="Samily e Caio">
+      <img class="end-photo__img" src="S&C (152 de 206).jpg" alt="Samilly e Caio">
     </section>
   </main>
 
@@ -73,20 +73,22 @@
 
   <script>
     // ---------------------------------------------------------
-    // FUNÇÃO DO WHATSAPP CORRIGIDA
+    // FUNÇÃO DO WHATSAPP ATUALIZADA
     // ---------------------------------------------------------
     function enviarWhatsApp() {
       // Pega o nome do link e arruma os espaços
       let nomeNoLink = window.location.search.substring(1).replace(/-/g, ' ').replace(/&/g, ' e ');
-      let nome = nomeNoLink ? decodeURIComponent(nomeNoLink) : "um convidado";
+      
+      // Se não tiver nome no link, coloca a instrução para o convidado digitar
+      let nome = nomeNoLink ? decodeURIComponent(nomeNoLink) : "(Escreva seu nome e dos seus acompanhantes aqui)";
       
       // O seu número
       let telefone = "5573988467912"; 
 
       // Monta a mensagem final
-      let mensagem = "Olá Samily e Caio! Aqui é " + nome + ". Estou confirmando minha presença no casamento!";
+      let mensagem = "Olá Samilly e Caio! Aqui é " + nome + ". Estamos confirmando nossa presença no casamento! ✨";
       
-      // Link oficial corrigido
+      // Link oficial
       let linkWhatsApp = "https://api.whatsapp.com/send?phone=" + telefone + "&text=" + encodeURIComponent(mensagem);
       
       // Abre o WhatsApp
