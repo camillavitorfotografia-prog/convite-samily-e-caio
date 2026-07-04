@@ -68,26 +68,31 @@
       <span class="audio-track">Wildfire - Seafret</span>
       <canvas id="music-visualizer" width="160" height="36" aria-hidden="true"></canvas>
     </div>
-    <audio id="bg-music" src="wildfire-spotdownorg_ENl50bdS.mp3"auto" autoplay playsinline></audio>
+    <audio id="bg-music" src="wildfire-spotdownorg_ENl50bdS.mp3" preload="auto" autoplay playsinline></audio>
   </section>
 
   <script>
-  
+    // ---------------------------------------------------------
+    // FUNÇÃO DO WHATSAPP CORRIGIDA
+    // ---------------------------------------------------------
     function enviarWhatsApp() {
-    
+      // Pega o nome do link e arruma os espaços
       let nomeNoLink = window.location.search.substring(1).replace(/-/g, ' ').replace(/&/g, ' e ');
       let nome = nomeNoLink ? decodeURIComponent(nomeNoLink) : "um convidado";
       
-      
+      // O seu número
       let telefone = "5573988467912"; 
 
-      
+      // Monta a mensagem final
       let mensagem = "Olá Samily e Caio! Aqui é " + nome + ". Estou confirmando minha presença no casamento!";
       
+      // Link oficial corrigido
+      let linkWhatsApp = "https://api.whatsapp.com/send?phone=" + telefone + "&text=" + encodeURIComponent(mensagem);
       
-      let linkWhatsApp = "https://api.whatsapp.com/send?phone=5573988467912" + telefone + "?text=" + encodeURIComponent(mensagem);
+      // Abre o WhatsApp
       window.open(linkWhatsApp, '_blank');
     }
+    // ---------------------------------------------------------
 
     document.addEventListener("DOMContentLoaded", () => {
       const audio = document.getElementById("bg-music");
